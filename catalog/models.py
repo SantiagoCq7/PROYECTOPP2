@@ -11,6 +11,7 @@ class MediaItem(models.Model):
 	content_type = models.CharField(max_length=10, choices=TYPE_CHOICES)
 	genre = models.CharField(max_length=100)
 	year = models.PositiveIntegerField()
+	poster_url = models.URLField(blank=True)
 	description = models.TextField(blank=True)
 	watched = models.BooleanField(default=False)
 	is_favorite = models.BooleanField(default=False)

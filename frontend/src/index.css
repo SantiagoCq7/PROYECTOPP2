@@ -126,9 +126,9 @@ h3 {
 }
 
 .dash-media-card {
+  position: relative;
   border: 1px solid var(--line-soft);
-  border-radius: 0.35rem;
-  background: var(--panel-1);
+  border-radius: 0.55rem;
   overflow: hidden;
 }
 
@@ -137,13 +137,23 @@ h3 {
 }
 
 .dash-poster {
-  height: 230px;
+  position: relative;
+  min-height: 430px;
   display: grid;
   place-items: center;
+  overflow: hidden;
   background:
     linear-gradient(145deg, rgba(255, 255, 255, 0.08), transparent 40%),
     radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.22), transparent 38%),
     linear-gradient(160deg, #2f394f, #141b29 58%, #0c121d);
+}
+
+.dash-poster::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0.8) 70%, rgba(0, 0, 0, 0.92));
+  pointer-events: none;
 }
 
 .dash-poster-img {
@@ -151,6 +161,23 @@ h3 {
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.dash-media-content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+.dash-media-meta {
+  display: inline-block;
+  padding: 0.15rem 0.42rem;
+  border-radius: 0.3rem;
+  background: rgba(2, 6, 23, 0.5);
+  border: 1px solid rgba(226, 232, 240, 0.24);
 }
 
 .dash-poster-sheet {

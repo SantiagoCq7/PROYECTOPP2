@@ -71,6 +71,7 @@ class Command(BaseCommand):
                             year=payload['year'],
                             defaults={
                                 'genre': payload['genre'],
+                                'poster_url': payload['poster_url'],
                                 'description': payload['description'],
                                 'rating': payload['rating'],
                                 'watched': False,
@@ -86,12 +87,15 @@ class Command(BaseCommand):
                         if item.genre != payload['genre']:
                             item.genre = payload['genre']
                             changed = True
+                        if item.poster_url != payload['poster_url']:
+                            item.poster_url = payload['poster_url']
+                            changed = True
                         if item.description != payload['description']:
                             item.description = payload['description']
                             changed = True
 
                         if changed:
-                            item.save(update_fields=['genre', 'description', 'updated_at'])
+                            item.save(update_fields=['genre', 'poster_url', 'description', 'updated_at'])
                             total_updated += 1
 
                     self.stdout.write(f'  Pagina {page}/{pages} procesada')

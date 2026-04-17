@@ -69,5 +69,8 @@ export function getMediaPoster(item) {
   if (!item) {
     return getFallbackPoster('movie')
   }
+  if (item.poster_url) {
+    return item.poster_url
+  }
   return POSTERS_BY_TITLE[normalizeTitle(item.title)] ?? getFallbackPoster(item.content_type)
 }

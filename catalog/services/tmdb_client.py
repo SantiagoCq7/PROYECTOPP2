@@ -5,6 +5,7 @@ from urllib.request import Request, urlopen
 
 
 TMDB_BASE_URL = 'https://api.themoviedb.org/3'
+TMDB_IMAGE_BASE_URL = 'https://media.themoviedb.org/t/p/w600_and_h900_face'
 
 
 class TMDBClientError(Exception):
@@ -78,12 +79,15 @@ def to_media_item_payload(raw_item, content_type, genre_map):
     vote_average = float(raw_item.get('vote_average') or 0)
     rating = round(vote_average / 2)
     rating = max(1, min(5, rating))
+    poster_path = (raw_item.get('poster_path') or '').strip()
+    poster_url = f'{TMDB_IMAGE_BASE_URL}{poster_path}' if poster_path else ''
 
     return {
         'title': title.strip(),
         'content_type': content_type if content_type in ('movie', 'series') else 'movie',
         'genre': genre_value,
         'year': year,
+        'poster_url': poster_url,
         'description': (raw_item.get('overview') or '').strip(),
         'rating': rating,
     }

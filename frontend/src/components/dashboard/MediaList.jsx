@@ -68,57 +68,57 @@ function MediaList({
                     event.currentTarget.src = networkFallback
                   }}
                 />
-              </div>
 
-              <div className="p-3">
-                <div className="flex items-start justify-between gap-2">
-                  <h3 className="text-base font-bold leading-tight">{item.title}</h3>
-                  <div className="flex items-center gap-2">
+                <div className="dash-media-content p-3">
+                  <div className="flex items-start justify-between gap-2">
+                    <h3 className="text-base font-bold leading-tight text-white">{item.title}</h3>
+                    <div className="flex items-center gap-2">
+                      <button
+                        className={`text-base ${item.is_favorite ? 'text-amber-300' : 'text-slate-200 hover:text-amber-200'}`}
+                        onClick={() => onToggleFavorite(item)}
+                        title="Marcar como favorito"
+                        type="button"
+                      >
+                        {item.is_favorite ? '❤' : '♡'}
+                      </button>
+                      <span className="text-xs font-bold text-(--brand-red)">{item.rating.toFixed(1)}</span>
+                    </div>
+                  </div>
+
+                  <p className="dash-media-meta mt-1 text-[11px] uppercase tracking-[0.12em] text-slate-100">
+                    {item.content_type === 'movie' ? 'Pelicula' : 'Serie'} · {item.genre} · {item.year}
+                  </p>
+
+                  <p className="mt-2 max-h-10 overflow-hidden text-xs text-slate-100/95">{item.description || 'Sin descripcion.'}</p>
+
+                  <div className="mt-3 flex flex-wrap items-center gap-2">
                     <button
-                      className={`text-base ${item.is_favorite ? 'text-amber-400' : 'text-slate-600 hover:text-amber-300'}`}
-                      onClick={() => onToggleFavorite(item)}
-                      title="Marcar como favorito"
+                      className={`rounded-sm border px-2 py-1 text-[10px] font-bold uppercase tracking-[0.1em] ${item.watched ? 'border-emerald-300/60 bg-emerald-500/25 text-emerald-100' : 'border-slate-300/40 bg-slate-500/25 text-slate-100'}`}
+                      type="button"
+                      onClick={() => onToggleWatched(item)}
+                    >
+                      {item.watched ? 'Visto' : 'Pendiente'}
+                    </button>
+
+                    <StarRating value={item.rating} onChange={(star) => onRate(item, star)} size="text-base" />
+                  </div>
+
+                  <div className="mt-3 flex gap-2">
+                    <button
+                      className="rounded-sm border border-slate-200/40 bg-black/25 px-2 py-1 text-xs font-semibold text-slate-100"
+                      onClick={() => onEdit(item)}
                       type="button"
                     >
-                      {item.is_favorite ? '❤' : '♡'}
+                      Editar
                     </button>
-                    <span className="text-xs font-bold text-(--brand-red)">{item.rating.toFixed(1)}</span>
+                    <button
+                      className="rounded-sm border border-red-300/45 bg-black/25 px-2 py-1 text-xs font-semibold text-red-100"
+                      onClick={() => onDelete(item.id)}
+                      type="button"
+                    >
+                      Eliminar
+                    </button>
                   </div>
-                </div>
-
-                <p className="mt-1 text-[11px] uppercase tracking-[0.12em] text-(--text-dim)">
-                    {item.content_type === 'movie' ? 'Pelicula' : 'Serie'} · {item.genre} · {item.year}
-                </p>
-
-                <p className="mt-2 max-h-8 overflow-hidden text-xs text-(--text-dim)">{item.description || 'Sin descripcion.'}</p>
-
-                <div className="mt-3 flex flex-wrap items-center gap-2">
-                  <button
-                    className={`rounded-sm px-2 py-1 text-[10px] font-bold uppercase tracking-[0.1em] ${item.watched ? 'bg-emerald-500/20 text-emerald-300' : 'bg-slate-500/20 text-slate-300'}`}
-                    type="button"
-                    onClick={() => onToggleWatched(item)}
-                  >
-                    {item.watched ? 'Visto' : 'Pendiente'}
-                  </button>
-
-                  <StarRating value={item.rating} onChange={(star) => onRate(item, star)} size="text-base" />
-                </div>
-
-                <div className="mt-3 flex gap-2">
-                  <button
-                    className="rounded-sm border border-(--line-soft) px-2 py-1 text-xs font-semibold"
-                    onClick={() => onEdit(item)}
-                    type="button"
-                  >
-                    Editar
-                  </button>
-                  <button
-                    className="rounded-sm border border-red-700/60 px-2 py-1 text-xs font-semibold text-red-300"
-                    onClick={() => onDelete(item.id)}
-                    type="button"
-                  >
-                    Eliminar
-                  </button>
                 </div>
               </div>
             </li>
