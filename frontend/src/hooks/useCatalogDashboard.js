@@ -8,6 +8,7 @@ import {
   patchItem,
   updateItem,
 } from '../services/catalogApi'
+import { useAuth } from '../context/AuthContext'
 
 const emptyForm = {
   title: '',
@@ -21,6 +22,7 @@ const emptyForm = {
 }
 
 export function useCatalogDashboard() {
+  const { user } = useAuth()
   const [items, setItems] = useState([])
   const [stats, setStats] = useState(null)
   const [recommendations, setRecommendations] = useState([])
@@ -32,6 +34,8 @@ export function useCatalogDashboard() {
   const [error, setError] = useState('')
 
   const loadData = useCallback(async (genre = genreFilter) => {
+    if (!user) return
+
     setLoading(true)
     setError('')
 
@@ -50,11 +54,13 @@ export function useCatalogDashboard() {
     } finally {
       setLoading(false)
     }
-  }, [genreFilter])
+  }, [genreFilter, user])
 
   useEffect(() => {
-    loadData(genreFilter)
-  }, [genreFilter, loadData])
+    if (user) {
+      loadData(genreFilter)
+    }
+  }, [genreFilter, loadData, user])
 
   const genres = useMemo(() => {
     const allGenres = items.map((item) => item.genre.trim()).filter(Boolean)

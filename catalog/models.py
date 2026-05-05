@@ -16,6 +16,7 @@ class MediaItem(models.Model):
 	watched = models.BooleanField(default=False)
 	is_favorite = models.BooleanField(default=False)
 	rating = models.PositiveSmallIntegerField(default=1)
+	owner = models.ForeignKey('auth.User', related_name='media_items', on_delete=models.CASCADE, null=True, blank=True)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 
