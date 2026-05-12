@@ -1,16 +1,26 @@
-# React + Vite
+# 🎨 Frontend - Gestor de Películas y Series
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este es el frontend del proyecto, desarrollado con **React**, **Vite** y **TailwindCSS v4**.
 
-Currently, two official plugins are available:
+## 🛠️ Instalación y Ejecución
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Para ver las instrucciones completas sobre cómo instalar y ejecutar todo el proyecto (Backend + Frontend), por favor dirígete al [README.md](../README.md) principal en la raíz del repositorio.
 
-## React Compiler
+Si solo deseas trabajar en el frontend, estos son los comandos básicos:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+# Instalar dependencias
+npm install
 
-## Expanding the ESLint configuration
+# Iniciar el servidor de desarrollo en http://localhost:5173
+npm run dev
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🏗️ Estructura de la carpeta
+- `src/components/`: Componentes reutilizables de UI (tarjetas, modales, etc).
+- `src/hooks/`: Custom hooks como `useCatalogDashboard.js` para manejar la lógica de estado y peticiones a la API.
+- `src/services/`: Lógica de integración con la API del backend (`catalogApi.js`).
+- `src/main.jsx`: Punto de entrada de la aplicación React.
+
+## 🔗 Conexión con el Backend
+El frontend espera que el backend de Django esté corriendo en `http://127.0.0.1:8000/api/` para poder obtener y enviar datos. Asegúrate de tenerlo en ejecución antes de utilizar la aplicación completa.

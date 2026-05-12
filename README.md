@@ -1,79 +1,118 @@
-# Gestor de Peliculas y Series
+# 🎬 Gestor de Películas y Series
 
-Aplicacion web full stack para gestionar peliculas y series vistas o pendientes, con calificaciones, filtros por genero, estadisticas y recomendaciones basicas.
+Aplicación web full stack para gestionar películas y series vistas o pendientes, con calificaciones, filtros por género, estadísticas y recomendaciones.
 
-## Stack
-- Backend: Django + Django REST Framework + SQLite
-- Frontend: React (Vite) + TailwindCSS v4
+## 🚀 Tecnologías (Stack)
+- **Backend:** Django + Django REST Framework + SQLite
+- **Frontend:** React (Vite) + TailwindCSS v4
 
-## Funcionalidades implementadas
-- Alta, edicion y eliminacion de peliculas/series
-- Marcar contenido como visto/no visto
-- Calificacion por estrellas (1 a 5)
-- Filtro por genero
-- Estadisticas: genero mas visto, total vistos, promedio, peliculas vs series
-- Recomendaciones: no vistos del genero favorito
+## ⚙️ Requisitos Previos
+- [Python 3.10+](https://www.python.org/downloads/)
+- [Node.js 18+](https://nodejs.org/)
 
-## Estructura
-- `backend/`: configuracion del proyecto Django
-- `catalog/`: modelo, API y logica de estadisticas/recomendaciones
-- `frontend/`: interfaz React + Tailwind
+---
 
-## Ejecutar backend
-```powershell
-c:/Users/santi/Desktop/PROYECTOPP2/.venv/Scripts/python.exe -m pip install -r requirements.txt
-c:/Users/santi/Desktop/PROYECTOPP2/.venv/Scripts/python.exe manage.py migrate
-c:/Users/santi/Desktop/PROYECTOPP2/.venv/Scripts/python.exe manage.py runserver
+## 🛠️ Instalación y Ejecución Local
+
+Sigue estos pasos para configurar y ejecutar el proyecto en tu máquina.
+
+### 1️⃣ Clonar el repositorio
+```bash
+git clone <url-del-repositorio>
+cd PROYECTOPP2
 ```
 
-## Seed de datos de prueba
-```powershell
-# Carga o actualiza el dataset base
-c:/Users/santi/Desktop/PROYECTOPP2/.venv/Scripts/python.exe manage.py seed_catalog
+### 2️⃣ Configurar y ejecutar el Backend (Django)
 
-# Borra todo y vuelve a sembrar desde cero
-c:/Users/santi/Desktop/PROYECTOPP2/.venv/Scripts/python.exe manage.py seed_catalog --reset
+Abre una terminal en la carpeta raíz del proyecto y ejecuta:
+
+```powershell
+# 1. Crear entorno virtual
+python -m venv .venv
+
+# 2. Activar el entorno virtual
+# En Windows (PowerShell):
+.\.venv\Scripts\Activate.ps1
+# En Windows (CMD):
+# .\.venv\Scripts\activate.bat
+# En Linux/Mac:
+# source .venv/bin/activate
+
+# 3. Instalar dependencias
+pip install -r requirements.txt
+
+# 4. Aplicar migraciones de la base de datos
+python manage.py migrate
+
+# 5. Cargar datos de prueba (Opcional)
+python manage.py seed_catalog
+
+# 6. Crear un superusuario (opcional, para panel de administración)
+python manage.py createsuperuser
+
+# 7. Iniciar el servidor de desarrollo
+python manage.py runserver
 ```
+📍 El backend (API) estará disponible en: `http://127.0.0.1:8000/api/`
+🔐 El panel de administración estará en: `http://127.0.0.1:8000/admin/`
 
-## Importar catalogo desde TMDB
-1) Crea un token Bearer en TMDB (Settings > API).
-2) Exporta la variable de entorno en la terminal actual:
+*(Nota: Para borrar la base de datos y volver a cargar los datos de prueba, puedes usar: `python manage.py seed_catalog --reset`)*
 
-```powershell
-$env:TMDB_BEARER_TOKEN = 'TU_TOKEN_TMDB'
-```
+### 3️⃣ Configurar y ejecutar el Frontend (React)
 
-3) Ejecuta la importacion paginada:
+Abre **otra** terminal, navega a la carpeta `frontend` y ejecuta:
 
 ```powershell
-# Importa peliculas y series (1 pagina por tipo)
-c:/Users/santi/Desktop/PROYECTOPP2/.venv/Scripts/python.exe manage.py import_tmdb --type both --pages 1 --language es-ES
+# 1. Navegar a la carpeta frontend
+cd frontend
 
-# Ejemplo: 5 paginas solo peliculas
-c:/Users/santi/Desktop/PROYECTOPP2/.venv/Scripts/python.exe manage.py import_tmdb --type movie --pages 5 --language es-ES
-
-# Opcional: borrar catalogo local antes de importar
-c:/Users/santi/Desktop/PROYECTOPP2/.venv/Scripts/python.exe manage.py import_tmdb --type both --pages 3 --reset
-```
-
-Notas:
-- La importacion no cambia la interfaz del frontend ni su estilo visual actual.
-- Para items existentes, solo actualiza genero y descripcion (respeta watched/favoritos/rating del usuario).
-
-Backend disponible en: `http://127.0.0.1:8000`
-API en: `http://127.0.0.1:8000/api/`
-
-## Ejecutar frontend
-```powershell
-Set-Location frontend
+# 2. Instalar dependencias de Node
 npm install
+
+# 3. Iniciar el servidor de desarrollo de Vite
 npm run dev
 ```
+📍 El frontend estará disponible en: `http://localhost:5173`
 
-Frontend disponible en: `http://localhost:5173`
+---
 
-## Endpoints principales
-- `GET/POST /api/items/`
-- `GET/PUT/PATCH/DELETE /api/items/{id}/`
-- `GET /api/stats/`
-- `GET /api/recommendations/`
+## 🌟 Funcionalidades Principales
+- **Gestión de Contenido:** Alta, edición y eliminación de películas y series.
+- **Seguimiento:** Marcar contenido como visto o pendiente.
+- **Calificaciones:** Sistema de calificación por estrellas (1 a 5).
+- **Filtros:** Búsqueda rápida por género.
+- **Panel de Estadísticas:** Género más visto, total de vistas, promedio de calificaciones y comparativa entre películas y series.
+- **Recomendaciones:** Sugerencias automáticas de contenido no visto basado en tus géneros favoritos.
+
+---
+
+## 📦 Importar Catálogo desde TMDB (Opcional)
+
+Puedes poblar la base de datos con contenido real desde The Movie Database (TMDB):
+
+1. Obtén un token Bearer en [TMDB (Settings > API)](https://www.themoviedb.org/settings/api).
+2. Exporta la variable de entorno en tu terminal actual:
+   ```powershell
+   $env:TMDB_BEARER_TOKEN="TU_TOKEN_TMDB"
+   ```
+3. Ejecuta el comando de importación:
+   ```powershell
+   # Importar películas y series (1 página por tipo) en español
+   python manage.py import_tmdb --type both --pages 1 --language es-ES
+
+   # Ejemplo: importar 5 páginas solo de películas
+   python manage.py import_tmdb --type movie --pages 5 --language es-ES
+
+   # Opcional: borrar el catálogo local existente antes de importar
+   python manage.py import_tmdb --type both --pages 3 --reset
+   ```
+
+*Nota: La importación respeta los items existentes (rating, visto, etc.) y solo actualiza sus metadatos (descripción, géneros).*
+
+---
+
+## 📂 Estructura del Proyecto
+- `backend/`: Configuración principal del proyecto Django (`settings.py`, `urls.py`).
+- `catalog/`: Aplicación que contiene los modelos (`Item`), lógica de la API, endpoints de estadísticas y recomendaciones.
+- `frontend/`: Proyecto React (Vite) con componentes de UI, hooks (`useCatalogDashboard.js`) y configuración de Tailwind.
+- `manage.py`: Script principal para la ejecución de comandos del backend.
