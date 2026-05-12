@@ -32,8 +32,10 @@ export function useCatalogDashboard() {
   const [editingId, setEditingId] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [page, setPage] = useState(1)
+  const [totalItems, setTotalItems] = useState(0)
 
-  const loadData = useCallback(async (genre = genreFilter) => {
+  const loadData = useCallback(async (genre = genreFilter, currentPage = page) => {
     if (!user) return
 
     setLoading(true)
@@ -41,11 +43,13 @@ export function useCatalogDashboard() {
 
     try {
       const [itemsData, statsData, recommendationData] = await Promise.all([
-        getItems(genre),
+        getItems(genre, currentPage),
         getStats(),
         getRecommendations(),
       ])
-      setItems(itemsData)
+      // itemsData is now { count, next, previous, results }
+      setItems(itemsData.results ?? [])
+      setTotalItems(itemsData.count ?? 0)
       setStats(statsData)
       setRecommendations(recommendationData.results ?? [])
       setFavoriteGenre(recommendationData.favorite_genre ?? '')
@@ -54,13 +58,17 @@ export function useCatalogDashboard() {
     } finally {
       setLoading(false)
     }
-  }, [genreFilter, user])
+  }, [genreFilter, page, user])
 
   useEffect(() => {
     if (user) {
-      loadData(genreFilter)
+      loadData(genreFilter, page)
     }
-  }, [genreFilter, loadData, user])
+  }, [genreFilter, loadData, page, user])
+
+  useEffect(() => {
+    setPage(1)
+  }, [genreFilter])
 
   const genres = useMemo(() => {
     const allGenres = items.map((item) => item.genre.trim()).filter(Boolean)
@@ -139,6 +147,9 @@ export function useCatalogDashboard() {
     stats,
     recommendations,
     favoriteGenre,
+    page,
+    setPage,
+    totalItems,
     genres,
     genreFilter,
     setGenreFilter,

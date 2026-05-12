@@ -1,0 +1,7 @@
+{
+  "python.defaultInterpreterPath": "c:\\Users\\santi\\Desktop\\PROYECTOPP2\\.venv\\Scripts\\python.exe",
+  "python.analysis.extraPaths": [
+    "c:\\Users\\santi\\Desktop\\PROYECTOPP2"
+  ],
+  "pyrefly.pythonInterpreter": "c:\\Users\\santi\\Desktop\\PROYECTOPP2\\.venv\\Scripts\\python.exe"
+}

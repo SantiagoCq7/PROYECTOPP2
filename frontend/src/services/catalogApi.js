@@ -1,4 +1,4 @@
-const API_BASE = 'http://127.0.0.1:8000/api'
+const API_BASE = 'http://127.0.0.1:8001/api'
 
 async function request(path, options = {}) {
   const token = localStorage.getItem('access_token')
@@ -21,8 +21,11 @@ async function request(path, options = {}) {
   return response.json()
 }
 
-export function getItems(genre = '') {
-  const query = genre ? `?genre=${encodeURIComponent(genre)}` : ''
+export function getItems(genre = '', page = 1) {
+  const params = new URLSearchParams()
+  if (genre) params.append('genre', genre)
+  if (page > 1) params.append('page', page)
+  const query = params.toString() ? `?${params.toString()}` : ''
   return request(`/items/${query}`)
 }
 

@@ -39,6 +39,9 @@ function App() {
     editingId,
     loading,
     error,
+    page,
+    setPage,
+    totalItems,
     handleSubmit,
     handleEdit,
     handleDelete,
@@ -105,7 +108,7 @@ function App() {
 
   return (
     <main className="min-h-screen bg-(--app-bg) text-(--text-main) selection:bg-(--brand-red)/30">
-      <div className="app-shell mx-auto flex min-h-screen w-full max-w-[1600px] overflow-hidden lg:my-6 lg:min-h-[calc(100vh-3rem)] lg:rounded-3xl border border-(--line-soft) bg-(--panel-0) backdrop-blur-3xl shadow-2xl">
+      <div className="app-shell mx-auto flex h-screen w-full max-w-[1600px] overflow-hidden lg:my-6 lg:h-[calc(100vh-3rem)] lg:rounded-3xl border border-(--line-soft) bg-(--panel-0) backdrop-blur-3xl shadow-2xl">
         
         {/* Sidebar */}
         <aside className="sidebar-blur hidden w-[260px] border-r border-(--line-soft) px-6 py-8 lg:flex lg:flex-col">
@@ -227,6 +230,9 @@ function App() {
               onToggleWatched={(item) => updateQuickField(item, { watched: !item.watched })}
               onToggleFavorite={(item) => updateQuickField(item, { is_favorite: !item.is_favorite })}
               onRate={(item, star) => updateQuickField(item, { rating: star })}
+              page={page}
+              setPage={setPage}
+              totalItems={totalItems}
             />
           </motion.div>
         </section>

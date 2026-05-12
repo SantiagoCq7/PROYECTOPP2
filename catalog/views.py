@@ -11,23 +11,22 @@ class MediaItemViewSet(viewsets.ModelViewSet):
 	serializer_class = MediaItemSerializer
 
 	def get_queryset(self):
-		# Only return items belonging to the current user
-		user = self.request.user
-		queryset = MediaItem.objects.filter(owner=user)
+		# Catálogo compartido: todos los usuarios ven todas las películas/series
+		queryset = MediaItem.objects.all()
 		genre = self.request.query_params.get('genre')
 		if genre:
 			queryset = queryset.filter(genre__iexact=genre)
 		return queryset
 
 	def perform_create(self, serializer):
-		# Assign the authenticated user as the owner
+		# Guarda quién añadió el ítem (opcional, para trazabilidad)
 		serializer.save(owner=self.request.user)
 
 
 @api_view(['GET'])
 def stats_view(request):
-	user = request.user
-	watched_items = MediaItem.objects.filter(owner=user, watched=True)
+	# Estadísticas globales del catálogo completo
+	watched_items = MediaItem.objects.filter(watched=True)
 	top_genre_data = (
 		watched_items.values('genre').annotate(total=Count('id')).order_by('-total').first()
 	)
@@ -38,7 +37,7 @@ def stats_view(request):
 		{
 			'top_genre': top_genre_data['genre'] if top_genre_data else None,
 			'total_watched': total_watched,
-			'total_favorites': MediaItem.objects.filter(owner=user, is_favorite=True).count(),
+			'total_favorites': MediaItem.objects.filter(is_favorite=True).count(),
 			'average_rating': round(float(avg_rating), 2) if avg_rating else 0,
 			'watched_movies': watched_items.filter(content_type='movie').count(),
 			'watched_series': watched_items.filter(content_type='series').count(),
@@ -48,8 +47,8 @@ def stats_view(request):
 
 @api_view(['GET'])
 def recommendations_view(request):
-	user = request.user
-	watched_items = MediaItem.objects.filter(owner=user, watched=True)
+	# Recomienda del catálogo global lo que no se ha visto del género favorito
+	watched_items = MediaItem.objects.filter(watched=True)
 	top_genre_data = (
 		watched_items.values('genre').annotate(total=Count('id')).order_by('-total').first()
 	)
@@ -59,7 +58,7 @@ def recommendations_view(request):
 
 	favorite_genre = top_genre_data['genre']
 	recommendations = (
-		MediaItem.objects.filter(owner=user, watched=False, genre__iexact=favorite_genre)
+		MediaItem.objects.filter(watched=False, genre__iexact=favorite_genre)
 		.order_by('-rating', '-year')[:5]
 	)
 

@@ -134,13 +134,32 @@ class Command(BaseCommand):
         parser.add_argument(
             "--reset",
             action="store_true",
-            help="Elimina todos los MediaItem antes de sembrar datos",
+            help="Elimina los items del owner antes de sembrar",
+        )
+        parser.add_argument(
+            "--owner",
+            type=str,
+            default="testuser",
+            help="Username al que se asignan los items (default: testuser)",
         )
 
     def handle(self, *args, **options):
+        from django.contrib.auth.models import User
+
+        owner_username = options["owner"]
+        try:
+            owner = User.objects.get(username=owner_username)
+        except User.DoesNotExist:
+            self.stdout.write(
+                self.style.ERROR(
+                    f'Usuario "{owner_username}" no existe. Ejecuta primero: manage.py seed_users'
+                )
+            )
+            return
+
         if options["reset"]:
-            deleted, _ = MediaItem.objects.all().delete()
-            self.stdout.write(self.style.WARNING(f"Registros eliminados: {deleted}"))
+            deleted, _ = MediaItem.objects.filter(owner=owner).delete()
+            self.stdout.write(self.style.WARNING(f'Items de "{owner_username}" eliminados: {deleted}'))
 
         created_count = 0
         updated_count = 0
@@ -148,16 +167,18 @@ class Command(BaseCommand):
         for item_data in SEED_ITEMS:
             _, created = MediaItem.objects.update_or_create(
                 title=item_data["title"],
-                defaults=item_data,
+                owner=owner,
+                defaults={**item_data, "owner": owner},
             )
             if created:
                 created_count += 1
             else:
                 updated_count += 1
 
-        total_items = MediaItem.objects.count()
+        total_items = MediaItem.objects.filter(owner=owner).count()
         self.stdout.write(
             self.style.SUCCESS(
-                f"Seed completado. Creados: {created_count}, actualizados: {updated_count}, total actual: {total_items}."
+                f'Seed completado para "{owner_username}". '
+                f"Creados: {created_count}, actualizados: {updated_count}, total: {total_items}."
             )
         )
